@@ -135,14 +135,26 @@ public class TrunkSystem extends BaseComponentSystem {
 
             newTrunk.addComponent(new LocationComponent(new Vector3f(rightBlockPos)));
 
-            TrunkComponent newDoorComp = newTrunk.getComponent(TrunkComponent.class);
-            newTrunk.saveComponent(newDoorComp);
+            //TrunkComponent newTrunkComp = newTrunk.getComponent(TrunkComponent.class);
+            //newTrunk.saveComponent(newTrunkComp);
             newTrunk.send(new PlaySoundEvent(Assets.getSound("engine:PlaceBlock").get(), 0.5f));
             newTrunk.send(new TrunkPlacedEvent(event.getInstigator()));
         }
     }
 
     @ReceiveEvent(components = {TrunkComponent.class, BlockRegionComponent.class, LocationComponent.class})
+
+    public void setTrunkBlocks (TrunkComponent trunk, BlockRegion region, Side side)
+        {
+            Vector3i blockPos = region.getMin(new Vector3i());
+            Block bottomBlock = trunk.leftBlockFamily.getBlockForPlacement(new BlockPlacementData(blockPos, side, BOTTOM));
+            worldProvider.setBlock(blockPos, bottomBlock);
+
+            region.getMax(blockPos);
+            Block topBlock = trunk.rightBlockFamily.getBlockForPlacement(new BlockPlacementData(blockPos, side, 5arya));
+            worldProvider.setBlock(blockPos, topBlock);
+        }
+
     public void onOpen(ActivateEvent event, EntityRef entity) {
         //logger.info("We got activated");
     }
