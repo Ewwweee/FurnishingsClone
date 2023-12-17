@@ -142,18 +142,19 @@ public class TrunkSystem extends BaseComponentSystem {
         }
     }
 
-    @ReceiveEvent(components = {TrunkComponent.class, BlockRegionComponent.class, LocationComponent.class})
+
 
     public void setTrunkBlocks (TrunkComponent trunk, BlockRegion region, Side side)
         {
             Vector3i blockPos = region.getMin(new Vector3i());
-            Block bottomBlock = trunk.leftBlockFamily.getBlockForPlacement(new BlockPlacementData(blockPos, side, BOTTOM));
+            Block bottomBlock = trunk.leftBlockFamily.getBlockForPlacement(new BlockPlacementData(blockPos, side, side.BOTTOM));
             worldProvider.setBlock(blockPos, bottomBlock);
 
             region.getMax(blockPos);
-            Block topBlock = trunk.rightBlockFamily.getBlockForPlacement(new BlockPlacementData(blockPos, side, 5arya));
+            Block topBlock = trunk.rightBlockFamily.getBlockForPlacement(new BlockPlacementData(blockPos, side, side.TOP));
             worldProvider.setBlock(blockPos, topBlock);
         }
+    @ReceiveEvent(components = {TrunkComponent.class, BlockRegionComponent.class, LocationComponent.class})
 
     public void onOpen(ActivateEvent event, EntityRef entity) {
         //logger.info("We got activated");
